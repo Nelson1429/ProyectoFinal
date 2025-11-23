@@ -7,6 +7,5 @@ import com.poryectojpa.demo.models.Persona;
 
 @Repository
 public interface personaRepository extends JpaRepository<Persona, Integer> {
-    // Puedes agregar métodos personalizados como:
     Persona findByEmail(String email);
 }
