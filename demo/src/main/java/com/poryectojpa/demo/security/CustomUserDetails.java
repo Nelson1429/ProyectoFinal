@@ -37,7 +37,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return persona.getEmail();
+        return persona.getNombre();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     // (opcional) si quieres usarlo también:
-    public String getEmail() {
-        return persona.getEmail();
+    public String getnombre() {
+        return persona.getNombre();
     }
 }

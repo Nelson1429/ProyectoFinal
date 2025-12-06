@@ -26,16 +26,17 @@ public class SecurityConfig {
                         //  PERMITIR TODO LO DE CORREO
                         .requestMatchers("/correo/**").permitAll()
                         .requestMatchers("/correo/formulario", "/correo/enviar-desde-vista").permitAll()
-
+                        .requestMatchers("/reportes/**").permitAll()
+                        
                         //  ENDPOINT TUTOR 100% PÚBLICO (GET y POST)
-                        .requestMatchers("/tutor/**").permitAll()
+                        .requestMatchers("/tutor").permitAll()
 
                         //  PÚBLICOS
-                        .requestMatchers("/home", "/nosotros", "/contacto", "/registro", "/login",
+                        .requestMatchers("/home", "/nosotros", "/contacto", "/registro", "/login", "/acudiente",
                                 "/css/**", "/imagenes/**").permitAll()
 
                         // ADMIN
-                        .requestMatchers("/admin/**", "/personas/**", "/personas/exportarExcel")
+                        .requestMatchers("/admin/**", "/personas/**", "/personas/exportarExcel","/correo/formulario")
                                 .hasRole("ADMIN")
 
                         //  ADMIN + ESTUDIANTE

@@ -26,7 +26,7 @@ public class Tutor {
 
     // Relación con Persona
     @ManyToOne
-    @JoinColumn(name = "Persona_idPersona", referencedColumnName = "id_persona")
+    @JoinColumn(name = "id_persona", nullable = false)
     private Persona persona;
 
     // Getters y Setters

@@ -31,7 +31,7 @@ public class AcudienteService {
         AcudienteDTO dto = new AcudienteDTO();
         dto.setIdAcudiente(entity.getIdAcudiente());
         dto.setAutorizacion(entity.getAutorizacion());
-        dto.setIdPersona(entity.getPersona().getIdPersona());
+        dto.setIdPersona(entity.getPersona().getId());
         dto.setIdEstudianteDependiente(
                 entity.getEstudianteDependiente() != null ?
                         entity.getEstudianteDependiente().getIdEstudiante() : null

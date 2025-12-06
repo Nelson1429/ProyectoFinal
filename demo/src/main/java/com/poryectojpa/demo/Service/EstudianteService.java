@@ -22,6 +22,9 @@ public class EstudianteService {
         this.personaRepository = personaRepository;
     }
 
+  // =============================================
+    // LISTAR ESTUDIANTES (DTO)
+    // =============================================
     public List<EstudianteDTO> listar() {
         return estudianteRepository.findAll().stream().map(e -> {
             EstudianteDTO dto = new EstudianteDTO();
@@ -34,6 +37,9 @@ public class EstudianteService {
         }).collect(Collectors.toList());
     }
 
+    // =============================================
+    // GUARDAR (DTO)
+    // =============================================
     public EstudianteDTO guardar(EstudianteDTO dto) {
         Estudiante e = new Estudiante();
         e.setContraseña(dto.getContraseña());
@@ -51,22 +57,26 @@ public class EstudianteService {
         return dto;
     }
 
+    // =============================================
+    // ELIMINAR (DTO)
+    // =============================================
     public void eliminar(Integer id) {
         estudianteRepository.deleteById(id);
     }
 
+    // =============================================
+    // 🔥 MÉTODOS QUE ESTABAN SIN IMPLEMENTAR
+    // =============================================
+
     public List<Estudiante> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return estudianteRepository.findAll();
     }
 
     public void save(Estudiante e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        estudianteRepository.save(e);
     }
 
     public void delete(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        estudianteRepository.deleteById(id);
     }
 }

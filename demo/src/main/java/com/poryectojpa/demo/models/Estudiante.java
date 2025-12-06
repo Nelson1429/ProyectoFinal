@@ -14,14 +14,14 @@ public class Estudiante {
     @Column(name = "id_estado_estudiante")
     private Integer estadoEstudiante; // <-- es un número, NO una entidad
 
-    @Column(name = "contraseña", nullable = false, length = 100)
-    private String contraseña;
+    @Column(name = "contrasena", nullable = false, length = 100)
+    private String contrasena;
 
     @Column(name = "progreso", nullable = false, length = 45)
     private String progreso;
 
     @ManyToOne
-    @JoinColumn(name = "Persona_idPersona", nullable = false)
+    @JoinColumn(name = "Persona_idPersona", referencedColumnName = "id_persona")
     private Persona persona;
 
     // Getters y Setters
@@ -31,8 +31,8 @@ public class Estudiante {
     public Integer getEstadoEstudiante() { return estadoEstudiante; }
     public void setEstadoEstudiante(Integer estadoEstudiante) { this.estadoEstudiante = estadoEstudiante; }
 
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getContraseña() { return contrasena; }
+    public void setContraseña(String contraseña) { this.contrasena = contraseña; }
 
     public String getProgreso() { return progreso; }
     public void setProgreso(String progreso) { this.progreso = progreso; }

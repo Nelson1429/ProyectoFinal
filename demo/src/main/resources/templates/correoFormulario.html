@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Enviar Correo - SaborMasterClass</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
         :root {
             --header-bg: #0f0f0f;
             --text-white: #ffffff;
             --blue-primary: #0057ff;
-            --gray-dark: #2f3437;
+            --gray-dark: #000000;
         }
 
         body {
@@ -24,7 +26,7 @@
         .page-header {
             background: var(--header-bg);
             color: var(--text-white);
-            padding: 14px 0;
+            padding: 40px 0;
         }
 
         .page-header a {
@@ -35,7 +37,7 @@
         }
 
         .brand {
-            font-size: 1.5rem;
+            font-size: 2.0rem;
             font-weight: 700;
         }
 
@@ -45,7 +47,7 @@
             margin: 50px auto;
             padding: 40px;
             border-radius: 14px;
-            box-shadow: 0px 4px 16px rgba(0,0,0,0.08);
+            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
             border: none;
         }
 
@@ -75,106 +77,96 @@
             font-size: 1rem;
             margin-left: 12px;
         }
+
+        .bg-dark {
+            --bs-bg-opacity: 1;
+            background-color: rgb(0, 0, 0) !important;
+        }
     </style>
 </head>
 
 <body>
+    <section layout:fragment="contenido">
 
-<header class="page-header">
-    <div class="container d-flex align-items-center justify-content-between">
-        <a class="brand" href="/">SaborMasterClass</a>
+        <main>
+            <div class="card card-form">
+                <h1 class="title">Enviar Correo</h1>
 
-        <nav>
-            <a href="/home">Inicio</a>
-            <a href="/nosotros">Nosotros</a>
-            <a href="/contacto">Contacto</a>
-            <a href="/correo/formulario">Formulario</a>
-        </nav>
-    </div>
-</header>
+                <form action="/correo/enviar-desde-vista" method="post" class="row g-3">
 
-<main>
-    <div class="card card-form">
-        <h1 class="title">Enviar Correo</h1>
+                    <div class="col-12">
+                        <label class="form-label">Para</label>
+                        <input type="email" name="para" class="form-control" placeholder="destinatario@ejemplo.com"
+                            required>
+                    </div>
 
-        <form action="/correo/enviar-desde-vista" method="post" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Asunto</label>
+                        <input type="text" name="asunto" class="form-control" placeholder="Asunto del correo" required>
+                    </div>
 
-            <div class="col-12">
-                <label class="form-label">Para</label>
-                <input type="email" name="para" class="form-control"
-                       placeholder="destinatario@ejemplo.com" required>
+                    <div class="col-12">
+                        <label class="form-label">Mensaje</label>
+                        <textarea name="mensaje" rows="5" class="form-control" placeholder="Escribe tu mensaje..."
+                            required></textarea>
+                    </div>
+
+                    <div class="col-12 d-flex">
+                        <button type="submit" name="tipo" value="texto" class="btn-send-text">
+                            Enviar texto
+                        </button>
+                    </div>
+
+                </form>
             </div>
+        </main>
 
-            <div class="col-12">
-                <label class="form-label">Asunto</label>
-                <input type="text" name="asunto" class="form-control"
-                       placeholder="Asunto del correo" required>
-            </div>
-
-            <div class="col-12">
-                <label class="form-label">Mensaje</label>
-                <textarea name="mensaje" rows="5" class="form-control"
-                          placeholder="Escribe tu mensaje..." required></textarea>
-            </div>
-
-            <div class="col-12 d-flex">
-                <button type="submit" name="tipo" value="texto" class="btn-send-text">
-                    Enviar texto
-                </button>
-
-                <button type="submit" name="tipo" value="html" class="btn-send-html">
-                    Enviar HTML
-                </button>
-            </div>
-
-        </form>
-    </div>
-</main>
-
-<!-- =======================
+        <!-- =======================
    TOAST para mensajes
    ======================= -->
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 2000">
-    <div id="toastMensaje" class="toast align-items-center text-bg-success border-0" role="alert">
-        <div class="d-flex">
-            <div class="toast-body" id="toastTexto">
-                <!-- Texto del mensaje -->
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000">
+            <div id="toastMensaje" class="toast align-items-center text-bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastTexto">
+                        <!-- Texto del mensaje -->
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"></button>
+                </div>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast"></button>
         </div>
-    </div>
-</div>
 
-<footer class="text-center py-4 text-muted">
-    © 2025 SaborMasterClass
-</footer>
+        <footer class="text-center py-4 text-muted">
+            © 2025 SaborMasterClass
+        </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    // Mostrar toast si viene message desde el controlador
-    document.addEventListener("DOMContentLoaded", function() {
-        const msg = "[[${mensaje}]]";
-        const tipo = "[[${tipoMensaje}]]"; // success o error
+        <script>
+            // Mostrar toast si viene message desde el controlador
+            document.addEventListener("DOMContentLoaded", function () {
+                const msg = "[[${mensaje}]]";
+                const tipo = "[[${tipoMensaje}]]"; // success o error
 
-        if (msg !== "" && msg !== "null") {
-            const toastElement = document.getElementById("toastMensaje");
-            const toastBody = document.getElementById("toastTexto");
+                if (msg !== "" && msg !== "null") {
+                    const toastElement = document.getElementById("toastMensaje");
+                    const toastBody = document.getElementById("toastTexto");
 
-            toastBody.textContent = msg;
+                    toastBody.textContent = msg;
 
-            // Cambiar color según tipo
-            if (tipo === "error") {
-                toastElement.classList.remove("text-bg-success");
-                toastElement.classList.add("text-bg-danger");
-            }
+                    // Cambiar color según tipo
+                    if (tipo === "error") {
+                        toastElement.classList.remove("text-bg-success");
+                        toastElement.classList.add("text-bg-danger");
+                    }
 
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        }
-    });
-</script>
+                    const toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                }
+            });
+        </script>
+    </section>
 
 </body>
+
 </html>

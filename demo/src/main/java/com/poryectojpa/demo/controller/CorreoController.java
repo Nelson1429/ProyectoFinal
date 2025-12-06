@@ -41,19 +41,49 @@ public class CorreoController {
             } else if (tipo.equals("html")) {
 
                 String html = """
-                        <div style="font-family: Arial; padding: 20px; background: #fdf2f8; border-radius: 15px;">
-                            <h2 style="color:#d946ef; text-align:center;">Mensaje HTML</h2>
 
-                            <p style="font-size:16px; color:#444;">
-                                %s
-                            </p>
+                                        <div style="margin:0; padding:0; background:#f2f2f2;">
+                          <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:600px; background:#ffffff; font-family:Arial, sans-serif;">
+                            <tr>
+                              <td style="padding:20px; text-align:center; background:#4f46e5; color:#ffffff;">
+                                <h2 style="margin:0; font-weight:normal;">Bienvenido %s</h2>
+                              </td>
+                            </tr>
 
-                            <p style="text-align:center; color:#999; font-size:13px; margin-top:25px;">
-                                Enviado desde el formulario
-                            </p>
+                            <tr>
+                              <td style="padding:25px; color:#333333; font-size:15px; line-height:1.6;">
+                                <p>Hola <b>%s</b>,</p>
+
+                                <p>
+                                  Gracias por registrarte en nuestra plataforma. Estamos muy contentos de tenerte con nosotros.
+                                  Ahora podrás acceder a todas nuestras funcionalidades, contenidos exclusivos y más.
+                                </p>
+
+                                <p style="background:#f4f4f4; padding:15px; border-left:4px solid #4f46e5;">
+                                  Si tienes dudas o necesitas ayuda, recuerda que puedes contactarnos en cualquier momento.
+                                </p>
+
+                                <div style="text-align:center; margin:30px 0;">
+                                  <a href="#"
+                                     style="background:#4f46e5; color:#ffffff; padding:12px 25px;
+                                            text-decoration:none; font-size:15px; display:inline-block;">
+                                    Ir a mi cuenta →
+                                  </a>
+                                </div>
+
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td style="padding:15px; text-align:center; font-size:12px; color:#777777; background:#fafafa;">
+                                © 2025 - Todos los derechos reservados
+                              </td>
+                            </tr>
+                          </table>
                         </div>
-                        """.formatted(mensaje);
 
+                                        """
+                        .formatted(mensaje);
                 emailService.enviarHtml(para, asunto, html);
             }
 
@@ -117,8 +147,7 @@ public class CorreoController {
             emailService.enviarTexto(
                     "sabormasterclass@gmail.com",
                     "Prueba Texto",
-                    "Este es un mensaje de prueba"
-            );
+                    "Este es un mensaje de prueba");
             return "✔ Correo (texto) enviado correctamente";
         } catch (Exception e) {
             return "❌ Error: " + e.getMessage();
@@ -132,8 +161,7 @@ public class CorreoController {
             emailService.enviarHtml(
                     "TU_CORREO@gmail.com",
                     "Prueba HTML",
-                    "<h1 style='color:blue;'>Correo HTML de prueba</h1>"
-            );
+                    "<h1 style='color:blue;'>Correo HTML de prueba</h1>");
             return "✔ Correo (HTML) enviado correctamente";
         } catch (Exception e) {
             return "❌ Error: " + e.getMessage();
@@ -148,8 +176,7 @@ public class CorreoController {
                     "TU_CORREO@gmail.com",
                     "Prueba Adjunto",
                     "Este correo contiene un archivo adjunto.",
-                    "C:/ruta/archivo.pdf"
-            );
+                    "C:/ruta/archivo.pdf");
             return "✔ Correo (adjunto) enviado correctamente";
         } catch (Exception e) {
             return "❌ Error: " + e.getMessage();
@@ -178,6 +205,7 @@ public class CorreoController {
                         © 2025 - Todos los derechos reservados
                     </p>
                 </div>
-                """.formatted(nombre);
+                """
+                .formatted(nombre);
     }
 }

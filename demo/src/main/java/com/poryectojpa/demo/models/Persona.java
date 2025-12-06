@@ -86,8 +86,5 @@ public class Persona implements Serializable {
     public void setRolId(Integer rolId) { this.rolId = rolId; }
     public String getContrasena() { return contrasena; }
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
-    public Integer getIdPersona() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIdPersona'");
-    }
+    
 }

@@ -8,4 +8,5 @@ import com.poryectojpa.demo.models.Persona;
 @Repository
 public interface personaRepository extends JpaRepository<Persona, Integer> {
     Persona findByEmail(String email);
+    Long countByGenero(String genero);
 }
