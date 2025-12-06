@@ -1,16 +1,25 @@
 package com.poryectojpa.demo.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poryectojpa.demo.models.Curso;
 import com.poryectojpa.demo.models.EstadoInscripcion;
 import com.poryectojpa.demo.models.Inscripcion;
+import com.poryectojpa.demo.models.Persona;
+import com.poryectojpa.demo.repository.EstadoInscripcionRepository;
 import com.poryectojpa.demo.repository.InscripcionRepository;
 import com.poryectojpa.demo.repository.cursoRepository;
-import com.poryectojpa.demo.repository.EstadoInscripcionRepository;
+import com.poryectojpa.demo.security.CustomUserDetails;
 
 @Controller
 @RequestMapping("/inscripciones")
@@ -26,10 +35,12 @@ public class InscripcionController {
     private InscripcionRepository inscripcionRepo;
 
     // ----------- MOSTRAR FORMULARIO -----------------
-    @GetMapping({"/nueva", "/nueva/{idEstudiante}"})
-    public String nuevaInscripcion(@PathVariable(required = false) Integer idEstudiante, Model model) {
+    @GetMapping({ "/nueva", "/nueva/{idEstudiante}" })
+    public String nuevaInscripcion(@PathVariable(required = false) Integer idEstudiante, Integer id_Curso,
+            Model model) {
 
         model.addAttribute("idEstudiante", idEstudiante);
+        model.addAttribute("idCurso", id_Curso);
         model.addAttribute("listaCursos", cursoRepository.findAll());
         model.addAttribute("listaEstados", estadoRepo.findAll());
 
@@ -38,22 +49,52 @@ public class InscripcionController {
 
     // ------------ GUARDAR INSCRIPCIÓN ----------------
     @PostMapping("/guardar")
-    public String guardarInscripcion(
-            @RequestParam Integer idEstudiante,
-            @RequestParam Integer idCurso,
-            @RequestParam Integer idEstado) {
+    public String guardarInscripcion(@RequestParam Integer idCurso) {
 
+        // 1. Obtener persona logueada
+        Persona personaActual = getPersona();
+
+        if (personaActual == null) {
+            return "redirect:/login";
+        }
+
+        // 2. Crear inscripción
         Inscripcion insc = new Inscripcion();
-        insc.setIdEstudiante(idEstudiante);
+        insc.setIdEstudiante(personaActual.getId());
+        insc.setFechaInscripcion(LocalDate.now());
 
+        // 3. Curso
         Curso curso = cursoRepository.findById(idCurso).orElse(null);
-        EstadoInscripcion estado = estadoRepo.findById(idEstado).orElse(null);
-
         insc.setCurso(curso);
+
+        // 4. Estado por defecto "INSCRITO"
+        EstadoInscripcion estado = new EstadoInscripcion();
+        estado.setId(1); // ID en tu tabla estado_inscripcion
         insc.setEstado(estado);
 
+        // 5. Guardar
         inscripcionRepo.save(insc);
 
-        return "redirect:/cursos"; // redirige a la lista de cursos
+        return "redirect:/cursos";
     }
+
+    public Persona getPersonaActual() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getPersona();
+        }
+
+        return null;
+    }
+
+    private Persona getPersona() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof CustomUserDetails userDetails) {
+            return userDetails.getPersona();
+        }
+        return null;
+    }
+
 }

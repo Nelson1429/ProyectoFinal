@@ -17,21 +17,13 @@
     <!-- ID Estudiante -->
     <input type="hidden" name="idEstudiante" th:value="${idEstudiante}">
 
+
     <label>Curso</label>
     <select name="idCurso" required>
         <option value="">Seleccione un curso</option>
         <option th:each="curso : ${listaCursos}"
                 th:value="${curso.id}"
                 th:text="${curso.nombre}">
-        </option>
-    </select>
-
-    <label>Estado inscripción</label>
-    <select name="idEstado" required>
-        <option value="">Seleccione un estado</option>
-        <option th:each="estado : ${listaEstados}"
-                th:value="${estado.id}"
-                th:text="${estado.nombre}">
         </option>
     </select>
 
