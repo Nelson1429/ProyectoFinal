@@ -8,146 +8,38 @@
         <h2 class="text-center fw-bold mb-4">Cursos Disponibles</h2>
 
         <div class="row">
-            <!-- Cursos -->
+
+            <!-- 📌 Columna de Cursos (9 columnas) -->
             <div class="col-lg-9">
                 <div class="row g-4">
 
-                    <!-- Curso 1 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
+                    <!-- Tarjeta dinámica -->
+                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex" th:each="curso : ${cursos}">
                         <div class="card curso-card position-relative w-100">
+
                             <span class="rating">★ 5.0</span>
-                            <img th:src="@{/imagenes/reposteria_creativa.jpg}" class="card-img-top"
-                                alt="Repostería Creativa">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Repostería Creativa</h5>
-                                <p class="card-text">🍰 Domina el arte de la repostería con técnicas profesionales.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$295.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Curso 2 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.5</span>
-                            <img th:src="@{/imagenes/cocina_internacional.jpg}" class="card-img-top"
-                                alt="Cocina Internacional">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Cocina Internacional</h5>
-                                <p class="card-text">🌍 Explora sabores del mundo con este curso multicultural.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$134.500</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <!-- Imagen -->
+                            <img th:src="@{/imagenes/default.jpg}" class="card-img-top" th:alt="${curso.nombre}">
 
-                    <!-- Curso 3 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.0</span>
-                            <img th:src="@{/imagenes/Cocina Japonesa Tradicional.jpeg}" class="card-img-top"
-                                alt="Cocina Japonesa">
                             <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Cocina Japonesa Tradicional</h5>
-                                <p class="card-text">📘 Sumérgete en los sabores auténticos del Japón: sushi, ramen,
-                                    tempura y más.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$149.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Curso 4 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 5.0</span>
-                            <img th:src="@{/imagenes/cocina-vegetariana-y-vegana.png}" class="card-img-top"
-                                alt="Gastronomía Vegetariana">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Gastronomía Vegetariana Moderna</h5>
-                                <p class="card-text">🥗 Aprende a crear platos vegetarianos equilibrados y deliciosos
-                                    con ingredientes frescos.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$128.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <h5 class="card-title" th:text="${curso.nombre}">Nombre curso</h5>
 
-                    <!-- Curso 5 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.3</span>
-                            <img th:src="@{/imagenes/medio-oriente.jpg}" class="card-img-top" alt="Medio Oriente">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Sabores del Medio Oriente</h5>
-                                <p class="card-text">🥘 Descubre el arte culinario del hummus, falafel, shawarma y
-                                    especias únicas.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$139.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <p class="card-text" th:text="${curso.detalle}">
+                                    Descripción del curso
+                                </p>
 
-                    <!-- Curso 6 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.9</span>
-                            <img th:src="@{/imagenes/Panaderia-artesanal.jpg}" class="card-img-top"
-                                alt="Panadería Artesanal">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Panadería Artesanal desde Cero</h5>
-                                <p class="card-text">🍞 Domina las técnicas para hornear panes rústicos, integrales y
-                                    fermentados.</p>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$132.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Curso 7 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.1</span>
-                            <img th:src="@{/imagenes/Parrila-y-Asado.jpg}" class="card-img-top" alt="Parrilla y Asado">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Técnicas de Parrilla y Asado</h5>
-                                <p class="card-text">🔥 Conviértete en maestro del asado con cortes, marinados y
-                                    técnicas de cocción.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$137.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    <span class="price" th:text="${curso.costo}">$0.00</span>
 
-                    <!-- Curso 8 -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
-                        <div class="card curso-card position-relative w-100">
-                            <span class="rating">★ 4.6</span>
-                            <img th:src="@{/imagenes/Cocina-Italiana-clasica.jpg}" class="card-img-top"
-                                alt="Cocina Italiana">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">Cocina Italiana Clásica</h5>
-                                <p class="card-text">🍝 Aprende a preparar pasta fresca, risottos y postres italianos
-                                    como un chef.</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <span class="price">$142.000</span>
-                                    <button class="btn btn-purple"><i class="fas fa-plus"></i></button>
+                                    <a th:href="@{/inscripciones/nueva(idCurso=${curso.id})}" class="btn btn-purple">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -155,7 +47,7 @@
                 </div>
             </div>
 
-            <!-- Opiniones -->
+            <!-- 📌 Columna de Opiniones (3 columnas) -->
             <div class="col-lg-3 mt-4 mt-lg-0">
                 <h5 class="mb-3">Opiniones de estudiantes</h5>
 
@@ -198,9 +90,10 @@
                 </div>
 
             </div>
+
         </div>
 
-        </main>
+    </div>
 </body>
 
 </html>
