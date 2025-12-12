@@ -1,11 +1,12 @@
 package com.poryectojpa.demo.SEEDER;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import com.poryectojpa.demo.models.Estudiante;
 import com.poryectojpa.demo.models.Persona;
 import com.poryectojpa.demo.repository.EstudianteRepository;
 import com.poryectojpa.demo.repository.personaRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 @Component
 public class EstudianteSeeder implements CommandLineRunner {
@@ -29,21 +30,21 @@ public class EstudianteSeeder implements CommandLineRunner {
             Persona p3 = personaRepository.findById(7).orElse(null);
 
             Estudiante e1 = new Estudiante();
-            e1.setContraseña("1234");
+            //e1.setContraseña("1234");
             e1.setProgreso("En curso");
             e1.setEstadoEstudiante(1);
             e1.setPersona(p1);
             estudianteRepository.save(e1);
 
             Estudiante e2 = new Estudiante();
-            e2.setContraseña("1235");
+            //e2.setContraseña("1235");
             e2.setProgreso("Sin terminar");
             e2.setEstadoEstudiante(2);
             e2.setPersona(p2);
             estudianteRepository.save(e2);
 
             Estudiante e3 = new Estudiante();
-            e3.setContraseña("1236");
+            //e3.setContraseña("1236");
             e3.setProgreso("En proceso de validacion");
             e3.setEstadoEstudiante(3);
             e3.setPersona(p3);

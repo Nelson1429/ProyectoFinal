@@ -37,6 +37,9 @@ public class Curso {
     @Column(name = "Categoria")
     private Integer categoria;
 
+    @Column(name = "imagen")
+    private String imagen;
+
     public Integer getId() {
         return id;
     }
@@ -99,6 +102,14 @@ public class Curso {
 
     public void setCategoria(Integer categoria) {
         this.categoria = categoria;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
 

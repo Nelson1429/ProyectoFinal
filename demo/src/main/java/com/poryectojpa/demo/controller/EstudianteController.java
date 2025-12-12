@@ -1,14 +1,18 @@
 package com.poryectojpa.demo.controller;
 
-import com.poryectojpa.demo.Service.EstudianteService;
-import com.poryectojpa.demo.dto.EstudianteDTO;
-import com.poryectojpa.demo.models.Estudiante;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import com.poryectojpa.demo.Service.EstudianteService;
+import com.poryectojpa.demo.dto.EstudianteDTO;
+import com.poryectojpa.demo.models.Estudiante;
 
 
 
@@ -72,7 +76,7 @@ public class EstudianteController {
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute EstudianteDTO dto) {
         Estudiante e = new Estudiante();
-        e.setContraseña(dto.getContraseña());
+        //e.setContraseña(dto.getContraseña());
         e.setProgreso(dto.getProgreso());
 
         // Si tienes Persona y EstadoEstudiante, los asignas aquí usando sus servicios

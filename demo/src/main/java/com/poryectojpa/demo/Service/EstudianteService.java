@@ -1,14 +1,15 @@
 package com.poryectojpa.demo.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.poryectojpa.demo.dto.EstudianteDTO;
 import com.poryectojpa.demo.models.Estudiante;
 import com.poryectojpa.demo.models.Persona;
 import com.poryectojpa.demo.repository.EstudianteRepository;
 import com.poryectojpa.demo.repository.personaRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EstudianteService {
@@ -29,7 +30,7 @@ public class EstudianteService {
         return estudianteRepository.findAll().stream().map(e -> {
             EstudianteDTO dto = new EstudianteDTO();
             dto.setIdEstudiante(e.getIdEstudiante());
-            dto.setContraseña(e.getContraseña());
+            //dto.setContraseña(e.getContraseña());
             dto.setProgreso(e.getProgreso());
             dto.setIdEstadoEstudiante(e.getEstadoEstudiante());
             dto.setIdPersona(e.getPersona().getId());
@@ -42,7 +43,7 @@ public class EstudianteService {
     // =============================================
     public EstudianteDTO guardar(EstudianteDTO dto) {
         Estudiante e = new Estudiante();
-        e.setContraseña(dto.getContraseña());
+        //e.setContraseña(dto.getContraseña());
         e.setProgreso(dto.getProgreso());
         e.setEstadoEstudiante(dto.getIdEstadoEstudiante());
 

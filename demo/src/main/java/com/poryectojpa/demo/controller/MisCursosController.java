@@ -3,21 +3,26 @@ package com.poryectojpa.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.poryectojpa.demo.models.Estudiante;
 import com.poryectojpa.demo.models.Inscripcion;
 import com.poryectojpa.demo.models.Persona;
+import com.poryectojpa.demo.repository.EstudianteRepository;
 import com.poryectojpa.demo.repository.InscripcionRepository;
 import com.poryectojpa.demo.security.CustomUserDetails;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 public class MisCursosController {
 
     @Autowired
     private InscripcionRepository inscripcionRepo;
+
+    @Autowired
+    private EstudianteRepository estudianteRepository;
 
     @GetMapping("/mis-cursos")
     public String misCursos(Model model) {
@@ -28,9 +33,11 @@ public class MisCursosController {
             return "redirect:/login";
         }
 
-        Integer idEstudiante = persona.getId(); // ← ID del estudiante
+        Estudiante estudiante = estudianteRepository
+                .findByPersona(persona)
+                .orElseThrow(() -> new RuntimeException("La persona no es estudiante"));
 
-        List<Inscripcion> inscripciones = inscripcionRepo.findByIdEstudiante(idEstudiante);
+        List<Inscripcion> inscripciones = inscripcionRepo.findByEstudiante_IdEstudiante(estudiante.getIdEstudiante());
 
         model.addAttribute("inscripciones", inscripciones);
 

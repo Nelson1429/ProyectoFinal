@@ -1,36 +1,41 @@
 package com.poryectojpa.demo.models;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "inscripcion")
 public class Inscripcion {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "id_inscripcion")  // ← ESTE NOMBRE DEBE COINCIDIR
-private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_inscripcion")
+    private Integer id;
 
-
-    @Column(name = "Fecha_Inscripcion", nullable = false)
+    @Column(name = "fecha_inscripcion", nullable = false)
     private LocalDate fechaInscripcion;
 
-    // Si quieres guardar solo el id del estudiante:
-    @Column(name = "id_estudiante")
-    private Integer idEstudiante;
-
-    // Relación con Curso (usa la FK id_curso)
     @ManyToOne
-    @JoinColumn(name = "id_curso")
+    @JoinColumn(name = "id_estudiante", nullable = false)
+    private Estudiante estudiante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_curso", nullable = false)
     private Curso curso;
 
-    // Relación con EstadoInscripcion (usa la FK id_estado)
     @ManyToOne
-    @JoinColumn(name = "id_estado")
+    @JoinColumn(name = "id_estado", nullable = false)
     private EstadoInscripcion estado;
 
-    // Getters y setters
+    // getters y setters
 
     public Integer getId() {
         return id;
@@ -48,12 +53,12 @@ private Integer id;
         this.fechaInscripcion = fechaInscripcion;
     }
 
-    public Integer getIdEstudiante() {
-        return idEstudiante;
+    public Estudiante getEstudiante() {
+        return estudiante;
     }
 
-    public void setIdEstudiante(Integer idEstudiante) {
-        this.idEstudiante = idEstudiante;
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
     }
 
     public Curso getCurso() {

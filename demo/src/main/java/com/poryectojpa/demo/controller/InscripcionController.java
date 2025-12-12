@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poryectojpa.demo.models.Curso;
 import com.poryectojpa.demo.models.EstadoInscripcion;
+import com.poryectojpa.demo.models.Estudiante;
 import com.poryectojpa.demo.models.Inscripcion;
 import com.poryectojpa.demo.models.Persona;
 import com.poryectojpa.demo.repository.EstadoInscripcionRepository;
+import com.poryectojpa.demo.repository.EstudianteRepository;
 import com.poryectojpa.demo.repository.InscripcionRepository;
 import com.poryectojpa.demo.repository.cursoRepository;
 import com.poryectojpa.demo.security.CustomUserDetails;
@@ -34,6 +37,9 @@ public class InscripcionController {
     @Autowired
     private InscripcionRepository inscripcionRepo;
 
+    @Autowired
+    private EstudianteRepository estudianteRepository;
+
     // ----------- MOSTRAR FORMULARIO -----------------
     @GetMapping({ "/nueva", "/nueva/{idEstudiante}" })
     public String nuevaInscripcion(@PathVariable(required = false) Integer idEstudiante, Integer id_Curso,
@@ -49,31 +55,47 @@ public class InscripcionController {
 
     // ------------ GUARDAR INSCRIPCIÓN ----------------
     @PostMapping("/guardar")
-    public String guardarInscripcion(@RequestParam Integer idCurso) {
+    public String guardarInscripcion(@RequestParam Integer idCurso, RedirectAttributes redirectAttributes) {
 
-        // 1. Obtener persona logueada
+        // 1. Persona logueada
         Persona personaActual = getPersona();
 
         if (personaActual == null) {
             return "redirect:/login";
         }
 
-        // 2. Crear inscripción
-        Inscripcion insc = new Inscripcion();
-        insc.setIdEstudiante(personaActual.getId());
-        insc.setFechaInscripcion(LocalDate.now());
+        // 2. Estudiante asociado a la persona
+        Estudiante estudiante = estudianteRepository
+                .findByPersona(personaActual)
+                .orElseThrow(() -> new RuntimeException("La persona no está registrada como estudiante"));
 
         // 3. Curso
-        Curso curso = cursoRepository.findById(idCurso).orElse(null);
+        @SuppressWarnings("null")
+        Curso curso = cursoRepository.findById(idCurso)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+
+        // 4. Estado INSCRITO (mejor obtenerlo de BD)
+        EstadoInscripcion estado = estadoRepo.findById(1)
+                .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        // VALIDACIÓN: evitar inscripción duplicada
+        if (inscripcionRepo.existsByEstudianteAndCurso(estudiante, curso)) {
+            return "redirect:/cursos?yaInscrito";
+        }
+
+        // 5. Crear inscripción
+        Inscripcion insc = new Inscripcion();
+        insc.setEstudiante(estudiante);
         insc.setCurso(curso);
-
-        // 4. Estado por defecto "INSCRITO"
-        EstadoInscripcion estado = new EstadoInscripcion();
-        estado.setId(1); // ID en tu tabla estado_inscripcion
         insc.setEstado(estado);
+        insc.setFechaInscripcion(LocalDate.now());
 
-        // 5. Guardar
+        // 6. Guardar
         inscripcionRepo.save(insc);
+        redirectAttributes.addFlashAttribute(
+        "exito",
+        "¡Te has inscrito correctamente en el curso!"
+);
 
         return "redirect:/cursos";
     }
