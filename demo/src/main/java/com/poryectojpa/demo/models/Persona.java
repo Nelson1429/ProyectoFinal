@@ -14,10 +14,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import jakarta.persistence.Transient;
+
 @Entity
 @Table(name = "persona")
 public class Persona implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -62,10 +63,17 @@ public class Persona implements Serializable {
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    @Column(name = "contrasena", nullable = false) // ⚡ corregido sin ñ
+    @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
-    // Getters y setters
+    // ✅ Campos transitorios para validación de formulario
+    @Transient
+    private String confirmarContrasena;
+
+    @Transient
+    private Boolean aceptaTerminos;
+
+    // Getters y setters existentes
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getDocumento() { return documento; }
@@ -86,5 +94,11 @@ public class Persona implements Serializable {
     public void setRolId(Integer rolId) { this.rolId = rolId; }
     public String getContrasena() { return contrasena; }
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
-    
+
+    // ✅ Getters y setters para los campos transitorios
+    public String getConfirmarContrasena() { return confirmarContrasena; }
+    public void setConfirmarContrasena(String confirmarContrasena) { this.confirmarContrasena = confirmarContrasena; }
+
+    public Boolean getAceptaTerminos() { return aceptaTerminos; }
+    public void setAceptaTerminos(Boolean aceptaTerminos) { this.aceptaTerminos = aceptaTerminos; }
 }

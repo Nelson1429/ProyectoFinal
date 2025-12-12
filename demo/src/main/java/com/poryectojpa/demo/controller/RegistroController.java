@@ -12,6 +12,7 @@ import com.poryectojpa.demo.models.Persona;
 import com.poryectojpa.demo.repository.personaRepository;
 
 import jakarta.validation.Valid;
+import jakarta.persistence.Transient;
 
 @Controller
 public class RegistroController {
@@ -31,21 +32,33 @@ public class RegistroController {
             BindingResult result,
             Model model) {
 
-        // Si hay errores de validación, volver al formulario
+        // Validaciones de Spring
         if (result.hasErrors()) {
             return "registro";
         }
 
-        // Verificar si ya existe el correo
+        // Validar si el correo ya existe
         if (personaRepository.findByEmail(persona.getEmail()) != null) {
             model.addAttribute("errorCorreo", "El correo ya está registrado");
             return "registro";
         }
 
-        // Guardar persona
+        // Validar confirmación de contraseña
+        if (!persona.getContrasena().equals(persona.getConfirmarContrasena())) {
+            model.addAttribute("errorContrasena", "Las contraseñas no coinciden");
+            return "registro";
+        }
+
+        // Validar aceptación de términos
+        if (persona.getAceptaTerminos() == null || !persona.getAceptaTerminos()) {
+            model.addAttribute("errorTerminos", "Debes aceptar los términos y condiciones");
+            return "registro";
+        }
+
+        // Guardar persona en la base de datos
         personaRepository.save(persona);
 
-        // Redirigir a login
+        // Redirigir al login
         return "redirect:/login";
     }
 }
