@@ -34,7 +34,7 @@
         </li>
         <!-- Nuevo enlace solo para estudiantes -->
         <li class="nav-item" sec:authorize="hasRole('ESTUDIANTE')">
-          <a th:href="@{/estudiante/mis-cursos}" class="nav-link">
+          <a th:href="@{/mis-cursos}" class="nav-link">
             Mis Cursos
           </a>
         </li>
