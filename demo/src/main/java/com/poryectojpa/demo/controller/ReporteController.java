@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable; // NUEVO: Para recibir el ID de la inscripción
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -84,6 +85,45 @@ public class ReporteController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error generando PDF: " + e.getMessage(), e);
+        }
+    } // AJUSTE: Se agregó la llave de cierre para el método generarReporteEstadistico
+
+// --- NUEVA FUNCIONALIDAD: DESCARGAR CERTIFICADO EN PDF ---
+    @GetMapping("/certificado/pdf/{idInscripcion}")
+    public void descargarCertificado(
+            @PathVariable Integer idInscripcion, 
+            HttpServletResponse response) {
+        try {
+            // 1. Buscamos la inscripción en la base de datos
+            // Usamos una consulta SQL personalizada para obtener los datos necesarios
+            String sql = "SELECT p.nombre_persona, c.Nombre, i.fecha_inscripcion " +
+                         "FROM inscripcion i " +
+                         "JOIN estudiante e ON i.id_estudiante = e.id_estudiante " +
+                         "JOIN persona p ON e.persona_id_persona = p.id_persona " +
+                         "JOIN curso c ON i.id_curso = c.id_curso " +
+                         "WHERE i.id_inscripcion = ?";
+
+            Map<String, Object> resultado = jdbcTemplate.queryForMap(sql, idInscripcion);
+
+            // 2. Preparamos los parámetros que se enviarán a la plantilla Certificado.jrxml
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("NOMBRE_ESTUDIANTE", resultado.get("nombre_persona"));
+            parametros.put("NOMBRE_CURSO", resultado.get("Nombre"));
+            parametros.put("FECHA", resultado.get("fecha_inscripcion").toString());
+
+            // 3. Generamos el arreglo de bytes del PDF usando el servicio de Jasper
+            byte[] pdfBytes = reporteJasperService.generarCertificadoPdf(parametros);
+
+            // 4. Configuramos la respuesta HTTP para que el navegador lo descargue como PDF
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=Certificado_" + resultado.get("Nombre") + ".pdf");
+            response.setContentLength(pdfBytes.length);
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error generando el certificado PDF: " + e.getMessage());
         }
     }
 }

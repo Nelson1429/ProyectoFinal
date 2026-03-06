@@ -32,6 +32,9 @@ public class AdminController {
     @Autowired
     private cursoRepository cursoRepository;
 
+    @Autowired
+    private com.poryectojpa.demo.repository.InscripcionRepository inscripcionRepository;
+
     // PANEL ADMIN CON FILTROS
     @GetMapping("/admin")
     public String mostrarPanelAdmin(
@@ -43,8 +46,7 @@ public class AdminController {
         final String filtroNombreFinal = (filtroNombre == null) ? "" : filtroNombre;
         // filtroRol puede quedarse como null
 
-        // aplicar filtros en memoria (si quieres que sea con queries personalizadas
-        // lo hacemos en el repo)
+        // aplicar filtros en memoria
         List<Persona> personas = personaRepository.findAll().stream()
                 .filter(p -> filtroNombreFinal.isEmpty() || p.getNombre().toLowerCase().contains(filtroNombreFinal.toLowerCase()))
                 .filter(p -> filtroRol == null || p.getRolId() != null && p.getRolId().equals(filtroRol))
@@ -59,11 +61,11 @@ public class AdminController {
         model.addAttribute("filtroNombre", filtroNombre);
         model.addAttribute("filtroRol", filtroRol);
 
-        // Tarjetas resumen
-        model.addAttribute("totalUsuarios", personas.size());
-        model.addAttribute("totalCursos", cursos.size());
-        model.addAttribute("totalTutores", 12);
-        model.addAttribute("nuevasInscripciones", 87);
+        // Tarjetas resumen dinámicas
+        model.addAttribute("totalUsuarios", personaRepository.count());
+        model.addAttribute("totalCursos", cursoRepository.count());
+        model.addAttribute("totalTutores", personaRepository.countByRolId(3));
+        model.addAttribute("nuevasInscripciones", inscripcionRepository.count());
 
         return "admin";
     }

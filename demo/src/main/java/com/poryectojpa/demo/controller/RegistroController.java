@@ -11,14 +11,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.poryectojpa.demo.models.Persona;
 import com.poryectojpa.demo.repository.personaRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import jakarta.validation.Valid;
-import jakarta.persistence.Transient;
 
 @Controller
 public class RegistroController {
 
     @Autowired
     private personaRepository personaRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private com.poryectojpa.demo.repository.EstudianteRepository estudianteRepository; // AJUSTE: Agregado para crear perfil de estudiante
 
     @GetMapping("/registro")
     public String mostrarFormulario(Model model) {
@@ -55,8 +62,20 @@ public class RegistroController {
             return "registro";
         }
 
+        // Cifrar la contraseña antes de guardar
+        persona.setContrasena(passwordEncoder.encode(persona.getContrasena()));
+
         // Guardar persona en la base de datos
-        personaRepository.save(persona);
+        Persona guardada = personaRepository.save(persona);
+
+        // AJUSTE: Si el rol es Usuario (2), creamos automáticamente su perfil de estudiante
+        if (guardada.getRolId() != null && guardada.getRolId() == 2) {
+            com.poryectojpa.demo.models.Estudiante estudiante = new com.poryectojpa.demo.models.Estudiante();
+            estudiante.setPersona(guardada);
+            estudiante.setProgreso("0%");
+            estudiante.setEstadoEstudiante(1);
+            estudianteRepository.save(estudiante);
+        }
 
         // Redirigir al login
         return "redirect:/login";

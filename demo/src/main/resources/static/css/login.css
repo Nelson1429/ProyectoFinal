@@ -7,9 +7,10 @@ body.no-footer {
   margin: 0;
   padding-top: 80px;   /* espacio navbar */
   padding-bottom: 60px; /* espacio footer */
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* AJUSTE: Evita el scroll */
 }
 
 /* ============================= */

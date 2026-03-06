@@ -35,7 +35,15 @@ public class MisCursosController {
 
         Estudiante estudiante = estudianteRepository
                 .findByPersona(persona)
-                .orElseThrow(() -> new RuntimeException("La persona no es estudiante"));
+                .orElseGet(() -> {
+                    // AJUSTE: Si no existe el registro de estudiante, lo creamos automáticamente
+                    // para evitar el error "La persona no es estudiante"
+                    Estudiante nuevoEstudiante = new Estudiante();
+                    nuevoEstudiante.setPersona(persona);
+                    nuevoEstudiante.setProgreso("0%");
+                    nuevoEstudiante.setEstadoEstudiante(1);
+                    return estudianteRepository.save(nuevoEstudiante);
+                });
 
         List<Inscripcion> inscripciones = inscripcionRepo.findByEstudiante_IdEstudiante(estudiante.getIdEstudiante());
 

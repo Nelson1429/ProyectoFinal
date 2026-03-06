@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poryectojpa.demo.repository.cursoRepository;
+import com.poryectojpa.demo.models.Curso;
 
 @Controller
 @RequestMapping("/cursos")
@@ -20,6 +21,15 @@ public class CursoController {
     public String listarCursos(Model model) {
         model.addAttribute("cursos", cursoRepository.findAll());
         return "cursos";
+    }
+
+    // Ver información del curso
+    @GetMapping("/{id}")
+    public String verInformacionCurso(@org.springframework.web.bind.annotation.PathVariable("id") Integer id, Model model) {
+        Curso curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado: " + id));
+        model.addAttribute("curso", curso);
+        return "ver-curso";
     }
 
     // // Mostrar formulario de creación

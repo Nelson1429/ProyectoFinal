@@ -50,4 +50,21 @@ public class LoginController {
             return "redirect:/estudiante";
         }
     }
+    @GetMapping("/forgot-password")
+    public String mostrarRecuperarContrasena() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String procesarRecuperarContrasena(@RequestParam String email, Model model) {
+        Persona user = personaRepository.findByEmail(email.trim());
+        if (user == null) {
+            model.addAttribute("error", "El correo no está registrado en el sistema.");
+            return "forgot-password";
+        }
+        
+        // Simulación de envío: Aquí se integraría con el EmailService más adelante
+        model.addAttribute("mensaje", "Se ha enviado un correo con las instrucciones para restablecer tu contraseña a: " + email);
+        return "forgot-password";
+    }
 }

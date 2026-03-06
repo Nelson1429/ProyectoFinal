@@ -31,68 +31,20 @@ public class CorreoController {
             @RequestParam String para,
             @RequestParam String asunto,
             @RequestParam String mensaje,
-            @RequestParam String tipo,
             RedirectAttributes redirectAttributes) {
 
         try {
-            if (tipo.equals("texto")) {
-                emailService.enviarTexto(para, asunto, mensaje);
+            // Se genera el contenido HTML con la nueva plantilla premium del proyecto
+            String html = generarPlantillaPremium(para, asunto, mensaje);
+            
+            // Se envía como HTML para que luzca profesional
+            emailService.enviarHtml(para, asunto, html);
 
-            } else if (tipo.equals("html")) {
-
-                String html = """
-
-                                        <div style="margin:0; padding:0; background:#f2f2f2;">
-                          <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:600px; background:#ffffff; font-family:Arial, sans-serif;">
-                            <tr>
-                              <td style="padding:20px; text-align:center; background:#4f46e5; color:#ffffff;">
-                                <h2 style="margin:0; font-weight:normal;">Bienvenido %s</h2>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td style="padding:25px; color:#333333; font-size:15px; line-height:1.6;">
-                                <p>Hola <b>%s</b>,</p>
-
-                                <p>
-                                  Gracias por registrarte en nuestra plataforma. Estamos muy contentos de tenerte con nosotros.
-                                  Ahora podrás acceder a todas nuestras funcionalidades, contenidos exclusivos y más.
-                                </p>
-
-                                <p style="background:#f4f4f4; padding:15px; border-left:4px solid #4f46e5;">
-                                  Si tienes dudas o necesitas ayuda, recuerda que puedes contactarnos en cualquier momento.
-                                </p>
-
-                                <div style="text-align:center; margin:30px 0;">
-                                  <a href="#"
-                                     style="background:#4f46e5; color:#ffffff; padding:12px 25px;
-                                            text-decoration:none; font-size:15px; display:inline-block;">
-                                    Ir a mi cuenta →
-                                  </a>
-                                </div>
-
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td style="padding:15px; text-align:center; font-size:12px; color:#777777; background:#fafafa;">
-                                © 2025 - Todos los derechos reservados
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-
-                                        """
-                        .formatted(mensaje);
-                emailService.enviarHtml(para, asunto, html);
-            }
-
-            redirectAttributes.addFlashAttribute("mensaje", "Correo enviado correctamente");
+            redirectAttributes.addFlashAttribute("mensaje", "Correo enviado correctamente con la nueva plantilla premium");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
 
         } catch (Exception e) {
-
-            redirectAttributes.addFlashAttribute("mensaje", "Error: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("mensaje", "Error al enviar el correo: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
 
@@ -119,7 +71,7 @@ public class CorreoController {
             @RequestParam String para,
             @RequestParam String asunto) throws MessagingException {
 
-        String html = generarPlantillaHtml(para);
+        String html = generarPlantillaPremium(para, asunto, "Mensaje de bienvenida automático");
         emailService.enviarHtml(para, asunto, html);
 
         return ResponseEntity.ok("Correo enviado correctamente (HTML).");
@@ -183,29 +135,67 @@ public class CorreoController {
         }
     }
 
-    // ============================================================
-    // 5️⃣ PLANTILLA HTML
-    // ============================================================
-    private String generarPlantillaHtml(String nombre) {
+    /**
+     * Genera una plantilla HTML premium con los colores institucionales (Negro, Dorado y Blanco)
+     */
+    private String generarPlantillaPremium(String para, String asunto, String mensaje) {
         return """
-                <div style="font-family: Arial; padding: 20px; background: #fdf2f8; border-radius: 15px;">
-                    <h2 style="color:#d946ef; text-align:center;">¡Bienvenido!</h2>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Segoe UI', Arial, sans-serif;">
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%%" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; margin-top: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        
+                        <!-- Cabecera Premium (Negro con acento Morado) -->
+                        <tr>
+                            <td align="center" style="background-color: #000000; padding: 40px 20px; border-bottom: 4px solid #6619f5;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 1px;">Sabor MasterClass</h1>
+                            </td>
+                        </tr>
 
-                    <p style="font-size:16px; color:#444;">
-                        Hola <b>%s</b>, estamos felices de que hagas parte de nuestra plataforma.
-                    </p>
+                        <!-- Cuerpo del Mensaje -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <h2 style="color: #333333; margin-top: 0; font-size: 20px;">Asunto: %s</h2>
+                                <p style="color: #555555; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                                    Hola <b>%s</b>,
+                                </p>
+                                <div style="background-color: #f9f9f9; padding: 25px; border-radius: 8px; border-left: 5px solid #000000; color: #444444; font-size: 16px; line-height: 1.6;">
+                                    %s
+                                </div>
+                                <p style="color: #555555; font-size: 16px; line-height: 1.6; margin-top: 25px;">
+                                    Si tienes alguna pregunta, no dudes en ponerte en contacto con nuestro equipo de soporte.
+                                </p>
+                                
+                                <!-- Botón de Acción -->
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" style="margin-top: 30px;">
+                                    <tr>
+                                        <td align="center" style="border-radius: 50px; background-color: #000000;">
+                                            <a href="http://localhost:8080/home" style="display: inline-block; padding: 12px 35px; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 50px; font-size: 14px;">
+                                                Ir a Sabor MasterClass
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 
-                    <div style="background:#fff; padding:15px; border-radius:10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <p style="color:#555;">
-                            Gracias por registrarte. Desde hoy podrás acceder a nuestros servicios y contenido.
-                        </p>
-                    </div>
-
-                    <p style="text-align:center; color:#999; font-size:13px; margin-top:25px;">
-                        © 2025 - Todos los derechos reservados
-                    </p>
-                </div>
+                        <!-- Pie de página (Negro) -->
+                        <tr>
+                            <td align="center" style="background-color: #000000; padding: 30px 20px; color: #aaaaaa; font-size: 12px;">
+                                <p style="margin: 0; color: #ffffff;">Sabor MasterClass © 2025</p>
+                                <p style="margin: 5px 0 0 0;">Todos los derechos reservados. Desarrollado por HAMN</p>
+                                <div style="margin-top: 15px;">
+                                    <span style="color: #6619f5;">•</span> Facebook <span style="color: #6619f5;">•</span> Instagram <span style="color: #6619f5;">•</span> Twitter
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
                 """
-                .formatted(nombre);
+                .formatted(asunto, para, mensaje);
     }
 }

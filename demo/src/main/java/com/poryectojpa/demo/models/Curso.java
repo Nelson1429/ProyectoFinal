@@ -40,6 +40,17 @@ public class Curso {
     @Column(name = "imagen")
     private String imagen;
 
+    @jakarta.persistence.OneToMany(mappedBy = "curso")
+    private java.util.List<Modulo> modulos;
+
+    public java.util.List<Modulo> getModulos() {
+        return modulos;
+    }
+
+    public void setModulos(java.util.List<Modulo> modulos) {
+        this.modulos = modulos;
+    }
+
     public Integer getId() {
         return id;
     }

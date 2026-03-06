@@ -17,9 +17,13 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+    private String fromEmail;
+
     @Override
     public void enviarTexto(String para, String asunto, String mensaje) {
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(fromEmail);
         mail.setTo(para);
         mail.setSubject(asunto);
         mail.setText(mensaje);
@@ -32,6 +36,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+        helper.setFrom(fromEmail);
         helper.setTo(para);
         helper.setSubject(asunto);
         helper.setText(html, true);
@@ -44,6 +49,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+        helper.setFrom(fromEmail);
         helper.setTo(para);
         helper.setSubject(asunto);
         helper.setText(mensaje);

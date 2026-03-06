@@ -8,6 +8,7 @@ public class EstadoInscripcion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     private String nombre;

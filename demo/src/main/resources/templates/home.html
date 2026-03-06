@@ -108,72 +108,28 @@
           </div>
 
           <div class="row g-4">
-            <!-- Curso 1 -->
-            <div class="col-md-6">
+            <!-- Cursos dinámicos -->
+            <div class="col-md-6" th:each="curso : ${cursos}">
               <div class="card curso-card h-100">
-                <img th:src="@{/imagenes/reposteria_creativa.jpg}" class="card-img-top curso-img" alt="Repostería">
+                <img th:src="@{/imagenes/{img}(img=${curso.imagen})}" class="card-img-top curso-img" th:alt="${curso.nombre}">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="card-title">Repostería Creativa</h6>
+                    <h6 class="card-title" th:text="${curso.nombre}">Nombre del Curso</h6>
                     <span class="badge bg-warning text-dark"><i class="fas fa-star"></i> 5.0</span>
                   </div>
-                  <p class="card-text text-white small">🍰 Domina el arte de la repostería con técnicas profesionales
-                    para crear postres irresistibles.</p>
-                  <p class="fw-bold">$295.000</p>
-                  <a th:href="@{/login}" class="btn btn-purple"><i class="fas fa-plus"></i></a>
+                  <p class="card-text text-white small" th:text="${curso.detalle}">Descripción del curso.</p>
+                  <p class="fw-bold" th:text="${#numbers.formatCurrency(curso.costo)}">$0.00</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-info text-dark" th:text="${curso.aprendizaje}">Nivel</span>
+                    <a th:href="@{/login}" class="btn btn-purple"><i class="fas fa-plus"></i></a>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <!-- Curso 2 -->
-            <div class="col-md-6">
-              <div class="card curso-card h-100">
-                <img th:src="@{/imagenes/cocina_internacional.jpg}" class="card-img-top curso-img" alt="Internacional">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="card-title">Cocina Internacional</h6>
-                    <span class="badge bg-warning text-dark"><i class="fas fa-star"></i> 5.0</span>
-                  </div>
-                  <p class="card-text text-white small">🌍 Aprende a preparar platos icónicos de diferentes culturas y
-                    lleva tu cocina a otro nivel.</p>
-                  <p class="fw-bold">$134.000</p>
-                  <a th:href="@{/login}" class="btn btn-purple"><i class="fas fa-plus"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Curso 3 -->
-            <div class="col-md-6">
-              <div class="card curso-card h-100">
-                <img th:src="@{/imagenes/cocina_japonesa.jpg}" class="card-img-top curso-img" alt="Japonesa">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="card-title">Cocina Japonesa</h6>
-                    <span class="badge bg-warning text-dark"><i class="fas fa-star"></i> 5.0</span>
-                  </div>
-                  <p class="card-text text-white small">🍣 Aprende sushi, ramen y otras delicias japonesas con técnicas
-                    profesionales.</p>
-                  <p class="fw-bold">$154.000</p>
-                  <a th:href="@{/login}" class="btn btn-purple"><i class="fas fa-plus"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Curso 4 -->
-            <div class="col-md-6">
-              <div class="card curso-card h-100">
-                <img th:src="@{/imagenes/parrila_bbq.jpg}" class="card-img-top curso-img" alt="Parrilla">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="card-title">Parrilla BBQ</h6>
-                    <span class="badge bg-warning text-dark"><i class="fas fa-star"></i> 5.0</span>
-                  </div>
-                  <p class="card-text text-white small">🔥 Aprende técnicas de parrilla, ahumado y salsas irresistibles.
-                  </p>
-                  <p class="fw-bold">$235.000</p>
-                  <a th:href="@{/login}" class="btn btn-purple"><i class="fas fa-plus"></i></a>
-                </div>
-              </div>
+            
+            <!-- Si no hay cursos -->
+            <div class="col-12 text-center" th:if="${#lists.isEmpty(cursos)}">
+              <p class="text-muted">No hay cursos disponibles en este momento.</p>
             </div>
           </div>
         </div>

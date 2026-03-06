@@ -67,7 +67,15 @@ public class InscripcionController {
         // 2. Estudiante asociado a la persona
         Estudiante estudiante = estudianteRepository
                 .findByPersona(personaActual)
-                .orElseThrow(() -> new RuntimeException("La persona no está registrada como estudiante"));
+                .orElseGet(() -> {
+                    // AJUSTE: Si no existe el registro de estudiante, lo creamos automáticamente
+                    // para evitar el error "La persona no está registrada como estudiante"
+                    Estudiante nuevoEstudiante = new Estudiante();
+                    nuevoEstudiante.setPersona(personaActual);
+                    nuevoEstudiante.setProgreso("0%");
+                    nuevoEstudiante.setEstadoEstudiante(1); // 1 = Activo por defecto
+                    return estudianteRepository.save(nuevoEstudiante);
+                });
 
         // 3. Curso
         @SuppressWarnings("null")

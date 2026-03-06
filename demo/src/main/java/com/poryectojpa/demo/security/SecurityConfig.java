@@ -7,7 +7,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -33,7 +33,7 @@ public class SecurityConfig {
 
                         //  PÚBLICOS
                         .requestMatchers("/home", "/nosotros", "/contacto", "/registro", "/login", "/acudiente",
-                                "/css/**", "/imagenes/**").permitAll()
+                                "/forgot-password", "/css/**", "/imagenes/**").permitAll()
 
                         // ADMIN
                         .requestMatchers("/admin/**", "/personas/**", "/personas/exportarExcel","/correo/formulario")
@@ -80,7 +80,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

@@ -41,7 +41,7 @@
         <li class="nav-item"><a th:href="@{/contacto}" class="nav-link">Contacto</a></li>
         <!-- Solo visible para ADMIN -->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-          <a th:href="@{/admin}" class="nav-link text-warning fw-bold">
+          <a th:href="@{/admin}" class="nav-link text-white fw-bold">
             <i class="fa-solid fa-gear"></i> Panel Admin
           </a>
         </li>
@@ -56,7 +56,8 @@
       <!-- Usuario autenticado -->
       <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
         <span class="text-white me-3">
-          👋 Bienvenido, <b sec:authentication="name"></b>
+          👋 Bienvenido, <a th:href="@{/perfil}" class="text-white text-decoration-none fw-bold"
+            sec:authentication="name" title="Ver mi perfil"></a>
         </span>
         <form th:action="@{/logout}" method="post">
           <button type="submit" class="btn btn-outline-light">Cerrar sesión</button>

@@ -38,4 +38,24 @@ public class ReporteJasperService {
             throw new RuntimeException("Error generando el reporte Jasper: " + e.getMessage(), e);
         }
     }
+
+    public byte[] generarCertificadoPdf(Map<String, Object> parametros) {
+        try {
+            InputStream jrxmlStream = getClass()
+                    .getResourceAsStream("/Reportes/Certificado.jrxml");
+
+            if (jrxmlStream == null) {
+                throw new RuntimeException("No se encontró la plantilla: /Reportes/Certificado.jrxml");
+            }
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+            // El certificado no suele llevar una lista (DataSource), solo parámetros
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JREmptyDataSource());
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error generando el certificado: " + e.getMessage(), e);
+        }
+    }
 }
