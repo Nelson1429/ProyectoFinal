@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.poryectojpa.demo.models.Persona;
-import com.poryectojpa.demo.repository.personaRepository;
+import com.poryectojpa.demo.repository.PersonaRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private personaRepository personaRepository;
+    private PersonaRepository personaRepository;
 
     // GET: mostrar login
     @GetMapping("/login")
@@ -37,12 +37,13 @@ public class LoginController {
             session.setAttribute("usuario", usuario.getEmail());
             session.setAttribute("rol", usuario.getRolId());
 
-            // redirigir según rol
+            // Redirigir según rol (Usamos rutas que existen)
+            if (usuario.getRolId() == null) return "redirect:/home";
+            
             switch (usuario.getRolId()) {
-                case 1: return "redirect:/administrador";
-                case 2: return "redirect:/estudiante";
-                case 3: return "redirect:/vendedor";
-                default: return "redirect:/";
+                case 1: return "redirect:/personas"; // Dashboard de admin
+                case 2: return "redirect:/home";     // Dashboard de estudiante
+                default: return "redirect:/home";
             }
         } else {
             model.addAttribute("mensaje", "Usuario o contraseña incorrecta");

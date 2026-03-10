@@ -13,7 +13,7 @@ public class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Persona")
+    @Column(name = "id_persona")
     private Integer id;
 
     @Column(name = "no_documento")
@@ -40,8 +40,8 @@ public class Persona {
     @Column(name = "id_rol")
     private Integer rolId;   // Cambiado a Integer porque en BD es int(11)
 
-    @Column(name = "contraseña")
-    private String contraseña; // Cambiado a String para coincidir con BD
+    @Column(name = "contrasena")
+    private String contraseña; // Cambiado a String para coincidir con BD e Hibernate
 
     public Integer getId() {
         return id;

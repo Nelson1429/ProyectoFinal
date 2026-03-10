@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.poryectojpa.demo.models.Persona;
 
 @Repository
-public interface personaRepository extends JpaRepository<Persona, Integer> {
+public interface PersonaRepository extends JpaRepository<Persona, Integer> {
     // Puedes agregar métodos personalizados como:
     Persona findByEmail(String email);
 }

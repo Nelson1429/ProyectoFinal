@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poryectojpa.demo.models.Persona;
-import com.poryectojpa.demo.repository.personaRepository;
+import com.poryectojpa.demo.repository.PersonaRepository;
 
 @Controller
 @RequestMapping("/personas")
 public class PersonaController {
 
     @Autowired
-    private personaRepository personaRepository;
+    private PersonaRepository personaRepository;
 
     // LISTAR
     @GetMapping
     public String mostrarPersonas(Model model) {
         List<Persona> personas = personaRepository.findAll();
         model.addAttribute("personas", personas);
-        return "admin"; // Vista unificada
+        return "lista"; // Cambiado de 'admin' a 'lista'
     }
 
     // CREAR - mostrar formulario
     @GetMapping("/nueva")
     public String mostrarFormularioNuevaPersona(Model model) {
         model.addAttribute("persona", new Persona());
-        return "admin"; // usamos el mismo archivo
+        return "formulario"; // Regresamos a la vista 'formulario'
     }
 
     // CREAR - guardar nueva persona
@@ -49,7 +49,7 @@ public class PersonaController {
         Persona persona = personaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Persona no encontrada: " + id));
         model.addAttribute("persona", persona);
-        return "admin"; 
+        return "formulario"; 
     }
 
     // EDITAR - actualizar

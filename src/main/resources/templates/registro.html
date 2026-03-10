@@ -41,7 +41,7 @@
                 <span class="error" id="error-email"></span>
               </div>
               <div class="mb-3">
-                <input type="contraseña" th:field="*{contraseña}" class="form-control" id="contraseña"
+                <input type="password" th:field="*{contraseña}" class="form-control" id="contraseña"
                   placeholder="Contraseña" maxlength="10"
                   pattern="(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.,?]).{8,10}"
                   title="Debe tener entre 8 y 10 caracteres, incluir una mayúscula, un número y un símbolo" required />
@@ -49,7 +49,7 @@
                 <span class="error" id="error-contraseña"></span>
               </div>
               <div class="mb-3">
-                <input type="contraseña" class="form-control" id="confirmar" placeholder="Confirme su contraseña" required
+                <input type="password" class="form-control" id="confirmar" placeholder="Confirme su contraseña" required
                   title="Debe coincidir con la contraseña anterior" />
                 <i class="fa fa-eye toggle-password" onclick="mostrarContrasena('confirmar', this)"></i>
                 <span class="error" id="error-confirmar"></span>
@@ -66,7 +66,7 @@
               <button type="submit" class="btn btn-dark w-100">Crear Cuenta</button>
               <div class="mt-3 text-center">
                 <a th:href="@{/login}" class="btn btn-outline-secondary me-2">Volver al Login</a>
-                <a th:href="@{/{}}" class="btn btn-outline-primary">Volver al Home</a>
+                <a th:href="@{/home}" class="btn btn-outline-primary">Volver al Home</a>
               </div>
             </form>
           </div>
