@@ -64,13 +64,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	
-   <dependency>
-     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-     <artifactId>azure-cognitiveservices-luis-authoring</artifactId>
-     <version>1.0.2-beta</version>
-   </dependency>
- </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>

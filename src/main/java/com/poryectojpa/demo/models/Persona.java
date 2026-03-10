@@ -31,7 +31,7 @@ public class Persona {
     @Column(name = "email_persona")
     private String email;
 
-    @Column(name = "Direccion_Persona")
+    @Column(name = "direccion_persona")
     private String direccion;
 
     @Column(name = "telefono_persona")
